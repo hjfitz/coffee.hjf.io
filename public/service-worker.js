@@ -1,5 +1,7 @@
+const APP_CACHE_NAME = 'v2'
+
 async function cacheResources(resources) {
-	const cache = await caches.open('v1')
+	const cache = await caches.open(APP_CACHE_NAME)
 	await cache.addAll(resources)
 }
 
