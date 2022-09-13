@@ -2,122 +2,19 @@
 import 'preact/debug'
 
 import {h, render} from 'preact'
-import {useEffect, useState} from 'preact/hooks'
-import { find, propEq } from 'ramda'
+import {useState} from 'preact/hooks'
+import {find, propEq} from 'ramda'
 
 import {BrewStyle, brewStyles, getHumanReadableRatio} from './coffee'
-import { useServiceWorker } from './register-service-worker'
+import {useServiceWorker} from './register-service-worker'
+import {Calculator} from './calculator'
+
 
 interface BrewstyleState extends BrewStyle {
 	selected?: boolean
 }
 
-// given some seconds, return mm:ss
-function secondsToHuman(seconds: number) {
-	const minutes = Math.floor(seconds / 60)
-	const secondsLeft = seconds % 60
 
-	const minutesStr = minutes.toString().padStart(2, '0')
-	const secondsStr = secondsLeft.toString().padStart(2, '0')
-
-	return `${minutesStr}:${secondsStr}`
-}
-
-const Timer = () => {
-	const [seconds, setSeconds] = useState(0);
-	const [timing, setTiming] = useState(false);
-
-	const toggleTiming = () => setTiming(cur => !cur)
-
-	const resetTimer = () => {
-		setTiming(false)
-		setSeconds(0)
-	}
-
-	useEffect(() => {
-		// typehack because node
-		let interval: ReturnType<typeof setInterval> | null = null
-		if (timing) {
-			interval = setInterval(() => {
-				setSeconds(s => s + 1)
-			}, 1e3);
-		} else {
-			if (interval) clearInterval(interval)
-		}
-		return () => interval && clearInterval(interval)
-	}, [timing]);
-
-	return (
-		<div class="flex flex-col items-center h-full justify-around">
-			<header class="text-5xl text-indigo-700 font-light">{secondsToHuman(seconds)}</header>
-			<div class="flex justify-evenly sm:justify-between w-full text-indigo-700 pt-4 sm:pt-0">
-				<a href="#" onClick={toggleTiming}>{timing ? 'Pause' : 'Start'}</a>
-				<a href="#" onClick={resetTimer}>Reset</a>
-			</div>
-		</div>
-	)
-}
-
-
-type CalculatorProps = BrewStyle
-
-const Calculator = ({ratioWater, ratioCoffee = 1, name, src}: CalculatorProps) => {
-	const [waterVal, setWaterVal] = useState(ratioWater)
-	const [coffeeVal, setCoffeeVal] = useState(ratioCoffee)
-
-	// hack for using props as state
-	useEffect(() => {
-		setWaterVal(ratioWater)
-		setCoffeeVal(ratioCoffee)
-	}, [ratioWater, ratioCoffee])
-
-	const onWaterChange = (ev: KeyboardEvent) => {
-		if (!ev.target) return
-		const tgt = ev.target as HTMLInputElement
-		const newWaterVal = parseInt(tgt.value, 10)
-		const newCoffeeVal = (ratioCoffee / ratioWater) * newWaterVal
-
-		setWaterVal(newWaterVal)
-		setCoffeeVal(newCoffeeVal)
-	}
-
-
-	const onCoffeeChange = (ev: KeyboardEvent) => {
-		if (!ev.target) return
-		const tgt = ev.target as HTMLInputElement
-		const newCoffeeVal = parseInt(tgt.value, 10)
-		const newWaterVal = (ratioWater / ratioCoffee) * newCoffeeVal
-
-		setWaterVal(newWaterVal)
-		setCoffeeVal(newCoffeeVal)
-	}
-
-	return (
-		<div className="flex flex-col h-full">
-			<header className="flex flex-col items-center mt-4">
-				<h2 className="text-4xl text-white ">{name} - {ratioCoffee}:{ratioWater}</h2>
-				<div>
-					<img className="invert h-36 w-auto m-8" src={src} />
-				</div>
-			</header>
-			<div class="flex-1 flex flex-col sm:flex-row justify-evenly bg-gray-100 rounded-t-lg pt-8 pb-4 px-8 border border-gray-100">
-				<section class="flex flex-col items-center justify-evenly ">
-					<div class="w-64 pb-8">
-						<label class="block text-zinc-400 text-sm">Coffee</label>
-						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={coffeeVal}  onKeyUp={onCoffeeChange} />
-					</div>
-					<div class="w-64">
-						<label class="block text-zinc-400 text-sm">Water</label>
-						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={waterVal} onKeyUp={onWaterChange} />
-					</div>
-				</section>
-				<section class="pt-8 sm:pt-0">
-					<Timer />
-				</section>
-			</div>
-		</div>
-	)
-}
 
 const findSelected = find(propEq('selected', true))
 

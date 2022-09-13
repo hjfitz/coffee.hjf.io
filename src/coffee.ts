@@ -4,11 +4,12 @@ export interface BrewStyle {
 	readonly ratioCoffee?: number // assume 1 if not there
 	readonly ratioWater: number
 	readonly src: string
+	readonly defaultWater?: number
 }
 
 
 export const brewStyles: BrewStyle[] = [
-	{ name: 'Espresso', ratioWater: 2, src: '/espresso.png' },
+	{ name: 'Espresso', ratioWater: 2, src: '/espresso.png', defaultWater: 40 },
 	{ name: 'Aeropress', ratioWater: 6, src: '/aeropress.png', },
 	{ name: 'French Press', ratioWater: 12, src: '/french-press.png' },
 	{ name: 'Moka Pot', ratioWater: 10, src: '/moka-pot.png' },

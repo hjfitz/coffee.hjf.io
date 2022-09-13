@@ -8,8 +8,14 @@ self.addEventListener('install', (event) => {
 		cacheResources([
 			'/',
 			'/index.html',
+
+			// styles
 			'/style.css',
+
+			// script
 			'/dist/main.js',
+
+			// images
 			'/aeropress.png',
 			'/cold-brew.png',
 			'/espresso.png',
