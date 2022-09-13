@@ -10,9 +10,9 @@ PWA for coffee ratios because I don't want to buy an app
 - [x] Initial func
 - [x] Deployment to netlify
 - [] Styling - desktop
-- [] Styling - mobile
-- [] Timer
-- [] Full PWA w/ manifest etc.
-- [] Timer notifications
-- [] Links to brew videos
-- [] Own persisted to localStorage
+- [x] Styling - mobile
+- [x] ~Timer~ Stopwatch
+- [x] Full PWA w/ manifest etc.
+- [ ] ~Timer notifications~
+- [ ] Links to brew videos
+- [ ] Own persisted to localStorage
