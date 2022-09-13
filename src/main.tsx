@@ -11,6 +11,52 @@ interface BrewstyleState extends BrewStyle {
 	selected?: boolean
 }
 
+// given some seconds, return mm:ss
+function secondsToHuman(seconds: number) {
+	const minutes = Math.floor(seconds / 60)
+	const secondsLeft = seconds % 60
+
+	const minutesStr = minutes.toString().padStart(2, '0')
+	const secondsStr = secondsLeft.toString().padStart(2, '0')
+
+	return `${minutesStr}:${secondsStr}`
+}
+
+const Timer = () => {
+	const [seconds, setSeconds] = useState(0);
+	const [timing, setTiming] = useState(false);
+
+	const toggleTiming = () => setTiming(cur => !cur)
+
+	const resetTimer = () => {
+		setTiming(false)
+		setSeconds(0)
+	}
+
+	useEffect(() => {
+		// typehack because node
+		let interval: ReturnType<typeof setInterval>;
+		if (timing) {
+			interval = setInterval(() => {
+				setSeconds(s => s + 1)
+			}, 1e3);
+		} else {
+			clearInterval(interval);
+		}
+		return () => clearInterval(interval)
+	}, [timing]);
+
+	return (
+		<div class="flex flex-col items-center h-full justify-around">
+			<header class="text-5xl text-indigo-700 font-light">{secondsToHuman(seconds)}</header>
+			<div class="flex justify-evenly sm:justify-between w-full text-indigo-700 pt-4 sm:pt-0">
+				<a href="#" onClick={toggleTiming}>{timing ? 'Pause' : 'Start'}</a>
+				<a href="#" onClick={resetTimer}>Reset</a>
+			</div>
+		</div>
+	)
+}
+
 
 type CalculatorProps = BrewStyle
 
@@ -53,16 +99,21 @@ const Calculator = ({ratioWater, ratioCoffee = 1, name, src}: CalculatorProps) =
 					<img className="invert h-36 w-auto m-8" src={src} />
 				</div>
 			</header>
-			<section class="flex-1 bg-gray-100 rounded-t-lg flex flex-col items-center justify-evenly pt-8 pb-4 border border-gray-100">
-				<div class="w-64 pb-8">
-					<label class="block text-zinc-400 text-sm">Coffee</label>
-					<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={coffeeVal}  onKeyUp={onCoffeeChange} />
-				</div>
-				<div class="w-64">
-					<label class="block text-zinc-400 text-sm">Water</label>
-					<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={waterVal} onKeyUp={onWaterChange} />
-				</div>
-			</section>
+			<div class="flex-1 flex flex-col sm:flex-row justify-evenly bg-gray-100 rounded-t-lg pt-8 pb-4 px-8 border border-gray-100">
+				<section class="flex flex-col items-center justify-evenly ">
+					<div class="w-64 pb-8">
+						<label class="block text-zinc-400 text-sm">Coffee</label>
+						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={coffeeVal}  onKeyUp={onCoffeeChange} />
+					</div>
+					<div class="w-64">
+						<label class="block text-zinc-400 text-sm">Water</label>
+						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={waterVal} onKeyUp={onWaterChange} />
+					</div>
+				</section>
+				<section class="pt-8 sm:pt-0">
+					<Timer />
+				</section>
+			</div>
 		</div>
 	)
 }
