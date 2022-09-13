@@ -6,6 +6,7 @@ import {useEffect, useState} from 'preact/hooks'
 import { find, propEq } from 'ramda'
 
 import {BrewStyle, brewStyles, getHumanReadableRatio} from './coffee'
+import { useServiceWorker } from './register-service-worker'
 
 interface BrewstyleState extends BrewStyle {
 	selected?: boolean
@@ -122,6 +123,8 @@ const findSelected = find(propEq('selected', true))
 
 const App = () => {
 	const [styles, setStyles] = useState<BrewstyleState[]>(brewStyles.map((style, idx) => ({...style, selected: idx === 0})))
+
+	useServiceWorker()
 
 	function select(toSelect: BrewstyleState) {
 		return function() {

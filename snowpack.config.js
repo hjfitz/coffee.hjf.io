@@ -2,7 +2,7 @@
 module.exports = {
 	plugins: [
 		'@snowpack/plugin-postcss',
-		'@snowpack/plugin-typescript'
+		'@snowpack/plugin-typescript',
 	],
 	routes: [
 		{

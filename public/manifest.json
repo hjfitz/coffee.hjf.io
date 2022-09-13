@@ -1,0 +1,10 @@
+{
+  "name": "RatioCalc",
+  "short_name": "Ratios",
+  "theme_color": "#302e81",
+  "background_color": "#302e81",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
