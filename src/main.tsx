@@ -36,15 +36,15 @@ const Timer = () => {
 
 	useEffect(() => {
 		// typehack because node
-		let interval: ReturnType<typeof setInterval>;
+		let interval: ReturnType<typeof setInterval> | null = null
 		if (timing) {
 			interval = setInterval(() => {
 				setSeconds(s => s + 1)
 			}, 1e3);
 		} else {
-			clearInterval(interval);
+			if (interval) clearInterval(interval)
 		}
-		return () => clearInterval(interval)
+		return () => interval && clearInterval(interval)
 	}, [timing]);
 
 	return (
