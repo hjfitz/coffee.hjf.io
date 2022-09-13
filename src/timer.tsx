@@ -39,10 +39,10 @@ export const Timer = () => {
 
 	return (
 		<div class="flex flex-col items-center h-full justify-around">
-			<header class="text-5xl text-indigo-700 font-light">{secondsToHuman(seconds)}</header>
+			<header class="text-5xl text-indigo-700 font-light bg-white px-6 py-3 rounded drop-shadow sm:w-full w-64 text-center">{secondsToHuman(seconds)}</header>
 			<div class="flex justify-evenly sm:justify-between w-full text-indigo-700 pt-4 sm:pt-0">
-				<a href="#" onClick={toggleTiming}>{timing ? 'Pause' : 'Start'}</a>
-				<a href="#" onClick={resetTimer}>Reset</a>
+				<button class="bg-white drop-shadow px-6 py-2 rounded hover:bg-indigo-100 transition ease duration-300 mr-4" onClick={toggleTiming}>{timing ? 'Pause' : 'Start'}</button>
+				<button class="bg-white drop-shadow px-6 py-2 rounded hover:bg-indigo-100 transition ease duration-300 ml-4" onClick={resetTimer}>Reset</button>
 			</div>
 		</div>
 	)
