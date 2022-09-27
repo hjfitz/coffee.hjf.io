@@ -29,16 +29,19 @@ self.addEventListener('install', (event) => {
 	)
 })
 
-self.addEventListener('fetch', async (event) => {
-	const cachedItem = await caches.match(event.request)
+async function handleCache(req) {
+	const cachedItem = await caches.match(req)
 	if (cachedItem) {
-		console.log('performing swr for', event.request)
-		event.respondWith(cachedItem)
-		const networkResponse = await fetch(event.request)
-		// stale-while-revalidate
-		const cache = await caches.open(APP_CACHE_NAME)
-		await cache.put(event.request, networkResponse)
+		console.log('performing swr for', req)
+		return cachedItem
 	}
-	const resp = await fetch(event.request)
-	event.respondWith(resp)
+	console.log('handling ', req)
+	const resp = await fetch(req)
+	const cache = await caches.open(APP_CACHE_NAME)
+	await cache.put(req, resp.clone())
+	return resp
+}
+
+self.addEventListener('fetch', async (event) => {
+	event.respondWith(handleCache(event.request))
 })
