@@ -9,7 +9,7 @@ type CalculatorProps = BrewStyle
 
 export const Calculator = ({defaultWater = 250, ratioWater, ratioCoffee = 1, name, src}: CalculatorProps) => {
 	const calculateCoffee = (water: number) => ((ratioCoffee / ratioWater) * water).toFixed(0)
-	const calculateWater = (coffee: number) => ((ratioWater / ratioCoffee) / coffee).toFixed(0)
+	const calculateWater = (coffee: number) => ((ratioWater / ratioCoffee) * coffee).toFixed(0)
 
 	const [coffeeVal, setCoffeeVal] = useState<string | number>(calculateCoffee(defaultWater))
 	const [waterVal, setWaterVal] = useState<string | number>(defaultWater)
@@ -44,27 +44,26 @@ export const Calculator = ({defaultWater = 250, ratioWater, ratioCoffee = 1, nam
 	return (
 		<div className="flex flex-col h-full">
 			<header className="flex flex-col items-center mt-4">
-				<h2 className="text-4xl text-white ">{name} - {ratioCoffee}:{ratioWater}</h2>
+				<h2 className="text-4xl text-white">{name} - {ratioCoffee}:{ratioWater}</h2>
 				<div>
-					<img className="invert h-36 w-auto m-8" src={src} />
+					<img className="m-8 w-auto h-36 invert" src={src} />
 				</div>
 			</header>
-			<div class="flex-1 flex flex-col sm:flex-row justify-evenly bg-gray-100 rounded-t-lg pt-8 pb-4 px-8 border border-gray-100">
-				<section class="flex flex-col items-center justify-evenly ">
-					<div class="w-64 pb-8">
-						<label class="block text-zinc-400 text-sm">Coffee (g):</label>
-						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={coffeeVal}  onKeyUp={onCoffeeChange} />
+			<div className="flex flex-col flex-1 justify-evenly px-8 pt-8 pb-4 bg-gray-100 rounded-t-lg border border-gray-100 sm:flex-row">
+				<section className="flex flex-col justify-evenly items-center">
+					<div className="pb-8 w-64">
+						<label className="block text-sm text-zinc-400">Coffee (g):</label>
+						<input className="py-1 px-2 w-full rounded drop-shadow-md border-slate-600" type="number" value={coffeeVal}  onKeyUp={onCoffeeChange} />
 					</div>
-					<div class="w-64">
-						<label class="block text-zinc-400 text-sm">Water (g):</label>
-						<input class="drop-shadow-md rounded px-2 py-1 border-slate-600 w-full" type="number" value={waterVal} onKeyUp={onWaterChange} />
+					<div className="w-64">
+						<label className="block text-sm text-zinc-400">Water (g):</label>
+						<input className="py-1 px-2 w-full rounded drop-shadow-md border-slate-600" type="number" value={waterVal} onKeyUp={onWaterChange} />
 					</div>
 				</section>
-				<section class="pt-8 sm:pt-0">
+				<section className="pt-8 sm:pt-0">
 					<Timer />
 				</section>
 			</div>
 		</div>
 	)
 }
-

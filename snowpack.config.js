@@ -21,4 +21,7 @@ module.exports = {
 		src: '/dist',
 		public: '/',
 	},
+	optimize: {
+		minify: true
+	},
 }
